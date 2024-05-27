@@ -12,12 +12,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Merchant;
-import org.bukkit.inventory.MerchantInventory;
-import org.bukkit.inventory.MerchantRecipe;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.ColorableArmorMeta;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -49,6 +49,26 @@ public class EnchantEvents implements Listener {
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void anvilCombine(PrepareAnvilEvent event) {
+        ItemStack result = event.getResult();
+        if (result == null) return;
+        if (result.getItemMeta() instanceof EnchantmentStorageMeta meta) {
+            if (meta.getStoredEnchants().containsKey(Enchantment.PROTECTION_ENVIRONMENTAL) && meta.getStoredEnchants().get(Enchantment.PROTECTION_ENVIRONMENTAL) > 2) {
+                event.setResult(null);
+                System.out.println("book result removed");
+            }
+        }
+        else {
+            ItemMeta meta = result.getItemMeta();
+            if (meta == null) return;
+            meta = checkEnchantment(meta, Enchantment.PROTECTION_ENVIRONMENTAL);
+            result.setItemMeta(meta);
+        }
+
+
     }
 
     @EventHandler
