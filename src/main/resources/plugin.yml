@@ -1,0 +1,4 @@
+name: RecipePlugin
+version: '${project.version}'
+main: org.secretlife.recipeplugin.RecipePlugin
+api-version: '1.20'
