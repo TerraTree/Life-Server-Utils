@@ -25,11 +25,7 @@ public class MobEvents implements Listener {
                     Material material = Material.getMaterial(entity.getType() + "_SPAWN_EGG");
                     if (material != null) {
                         ItemStack egg = new ItemStack(material);
-                        egg.setType(material);
-                        if (egg.getItemMeta() instanceof SpawnEggMeta meta) {
-                            egg.setItemMeta(meta);
-                            event.getDrops().add(egg);
-                        }
+                        event.getDrops().add(egg);
                     }
 
                 }
