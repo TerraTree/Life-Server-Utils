@@ -3,25 +3,30 @@ package org.secretlife.recipeplugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Mob;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.secretlife.recipeplugin.events.EnchantEvents;
+import org.secretlife.recipeplugin.events.MobEvents;
 
 public final class RecipePlugin extends JavaPlugin {
 
     EnchantEvents enchantEvents = new EnchantEvents();
+    MobEvents mobEvents = new MobEvents();
 
     @Override
     public void onEnable() {
         System.out.println("Enabled Recipe Plugin");
         getServer().getPluginManager().registerEvents(enchantEvents, this);
+        getServer().getPluginManager().registerEvents(mobEvents, this);
         elytraRecipe();
         saddleRecipe();
         tntRecipe();
         nametagRecipe();
         spawnerRecipe();
+
 
         //ShapedRecipe recipe2 = createRecipe(Material.CACTUS, "cactus");
         // Plugin startup logic
