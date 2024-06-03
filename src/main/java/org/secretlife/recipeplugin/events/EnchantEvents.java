@@ -1,9 +1,6 @@
 package org.secretlife.recipeplugin.events;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentOffer;
@@ -12,18 +9,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.PrepareAnvilEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.ArmorMeta;
-import org.bukkit.inventory.meta.ColorableArmorMeta;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.*;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class EnchantEvents implements Listener {
 
@@ -45,7 +40,6 @@ public class EnchantEvents implements Listener {
             if(enchantment.getKey().getKey().equals(NamespacedKey.minecraft("protection"))) {
                 if (enchantment.getValue() > 2) {
                     enchantment.setValue(2);
-                    Bukkit.broadcastMessage(event.getEnchanter().getDisplayName() + " has been nerfed lol!");
                 }
             }
         }
@@ -95,6 +89,34 @@ public class EnchantEvents implements Listener {
             event.setCancelled(true);
         }
     }
+
+    @EventHandler
+    public void brewing(BrewEvent event) {
+        List<ItemStack> results = event.getResults();
+        for (ItemStack item: results) {
+            if (item.getItemMeta() instanceof PotionMeta meta) {
+                PotionData data = meta.getBasePotionData();
+                PotionType type = meta.getBasePotionData().getType();
+                for (int i = 0; i < type.getPotionEffects().size(); i++) {
+                    PotionEffect potionEffect = type.getPotionEffects().get(i);
+                    if (potionEffect.getType() == PotionEffectType.INCREASE_DAMAGE && data.isUpgraded()) {
+                        PotionType type2 = PotionType.POISON;
+                        PotionData data2 = new PotionData(type2, false, false);
+                        meta.setBasePotionData(data2);
+                        meta.setDisplayName("Trouble");
+                        meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+                        item.setItemMeta(meta);
+                        break;
+                    }
+                }
+
+
+
+
+            }
+        }
+    }
+
 
     public ItemMeta checkEnchantment(ItemMeta meta, Enchantment enchantment) {
         if (meta.getEnchants().containsKey(enchantment) && meta.getEnchants().get(enchantment) > 2) {
