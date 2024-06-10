@@ -18,25 +18,23 @@ public final class RecipePlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        System.out.println("Enabled Recipe Plugin");
+        Bukkit.getLogger().info("Enabled VGS Utility Plugin");
         getServer().getPluginManager().registerEvents(enchantEvents, this);
         getServer().getPluginManager().registerEvents(mobEvents, this);
+        createRecipes();
+    }
+
+    @Override
+    public void onDisable() {
+        Bukkit.getLogger().info("Disabled VGS Utility Plugin");
+    }
+
+    private void createRecipes() {
         elytraRecipe();
         saddleRecipe();
         tntRecipe();
         nametagRecipe();
         spawnerRecipe();
-
-
-        //ShapedRecipe recipe2 = createRecipe(Material.CACTUS, "cactus");
-        // Plugin startup logic
-
-    }
-
-    @Override
-    public void onDisable() {
-        System.out.println("Disabled Recipe Plugin");
-        // Plugin shutdown logic
     }
 
     private ShapedRecipe createShapedRecipe(Material material, String namespacedKey) {

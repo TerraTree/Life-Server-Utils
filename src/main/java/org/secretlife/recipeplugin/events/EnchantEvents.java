@@ -1,6 +1,5 @@
 package org.secretlife.recipeplugin.events;
 
-import com.google.common.collect.Lists;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentOffer;
@@ -36,7 +35,6 @@ public class EnchantEvents implements Listener {
     @EventHandler
     public void itemEnchant(EnchantItemEvent event) {
         for (Map.Entry<Enchantment, Integer> enchantment: event.getEnchantsToAdd().entrySet()) {
-            System.out.println(enchantment.getKey().getKey());
             if(enchantment.getKey().getKey().equals(NamespacedKey.minecraft("protection"))) {
                 if (enchantment.getValue() > 2) {
                     enchantment.setValue(2);
@@ -52,7 +50,6 @@ public class EnchantEvents implements Listener {
         if (result.getItemMeta() instanceof EnchantmentStorageMeta meta) {
             if (meta.getStoredEnchants().containsKey(Enchantment.PROTECTION_ENVIRONMENTAL) && meta.getStoredEnchants().get(Enchantment.PROTECTION_ENVIRONMENTAL) > 2) {
                 event.setResult(null);
-                System.out.println("book result removed");
             }
         }
         else {
@@ -116,7 +113,6 @@ public class EnchantEvents implements Listener {
             }
         }
     }
-
 
     public ItemMeta checkEnchantment(ItemMeta meta, Enchantment enchantment) {
         if (meta.getEnchants().containsKey(enchantment) && meta.getEnchants().get(enchantment) > 2) {
