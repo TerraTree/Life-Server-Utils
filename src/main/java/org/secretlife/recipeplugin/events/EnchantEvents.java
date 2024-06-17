@@ -19,12 +19,14 @@ import org.bukkit.potion.PotionType;
 
 import java.util.*;
 
+import static org.secretlife.recipeplugin.Utils.checkEnchantment;
+
 public class EnchantEvents implements Listener {
 
     @EventHandler
     public void removeHighLevelEnchants(PrepareItemEnchantEvent event) {
         for (EnchantmentOffer offer: event.getOffers()) {
-            if (offer.getEnchantment().getKey().equals(NamespacedKey.minecraft("protection"))) {
+            if (offer != null && offer.getEnchantment().getKey().equals(NamespacedKey.minecraft("protection"))) {
                 offer.setEnchantmentLevel(Math.min(offer.getEnchantmentLevel(), 2));
             }
         }
@@ -112,13 +114,5 @@ public class EnchantEvents implements Listener {
 
             }
         }
-    }
-
-    public ItemMeta checkEnchantment(ItemMeta meta, Enchantment enchantment) {
-        if (meta.getEnchants().containsKey(enchantment) && meta.getEnchants().get(enchantment) > 2) {
-            meta.removeEnchant(enchantment);
-            meta.addEnchant(enchantment, 2, true);
-        }
-        return meta;
     }
 }
